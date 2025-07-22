@@ -21,6 +21,14 @@ export function PromptPage({ section, onNext, onBack, isFirstSection }: PromptPa
   const [showTyping, setShowTyping] = useState(true)
   const [showPrompt, setShowPrompt] = useState(false)
 
+  // Reset state when section changes
+  useEffect(() => {
+    setAnswers(section.prompts.map(() => ""))
+    setCurrentPromptIndex(0)
+    setShowTyping(true)
+    setShowPrompt(false)
+  }, [section.step])
+
   useEffect(() => {
     // Simulate typing delay
     const typingTimer = setTimeout(() => {
@@ -29,7 +37,7 @@ export function PromptPage({ section, onNext, onBack, isFirstSection }: PromptPa
     }, 1500)
 
     return () => clearTimeout(typingTimer)
-  }, [currentPromptIndex])
+  }, [currentPromptIndex, section.step])
 
   const handleAnswerChange = (index: number, value: string) => {
     const newAnswers = [...answers]

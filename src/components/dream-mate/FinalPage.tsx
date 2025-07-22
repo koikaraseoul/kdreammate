@@ -84,50 +84,60 @@ Created with Dream Mate
 
             <Separator />
 
-            <div className="grid gap-4">
+            <div className="grid gap-6">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">🌟 Dream</h3>
-                <p className="text-sm text-foreground/80 line-clamp-3">
-                  {session.dream.join(' ').slice(0, 120)}...
-                </p>
+                <h3 className="font-semibold text-foreground mb-3 text-lg">🌟 Dream</h3>
+                <div className="bg-card/30 p-4 rounded-lg">
+                  <p className="text-foreground/90 leading-relaxed">
+                    {session.dream.join('\n\n')}
+                  </p>
+                </div>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">⚡ Challenge</h3>
-                <p className="text-sm text-foreground/80 line-clamp-2">
-                  {session.challenge.join(' ').slice(0, 100)}...
-                </p>
+                <h3 className="font-semibold text-foreground mb-3 text-lg">⚡ Challenge</h3>
+                <div className="bg-card/30 p-4 rounded-lg">
+                  <p className="text-foreground/90 leading-relaxed">
+                    {session.challenge.join('\n\n')}
+                  </p>
+                </div>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">🌅 Turning Point</h3>
-                <p className="text-sm text-foreground/80 line-clamp-2">
-                  {session.turningPoint.join(' ').slice(0, 100)}...
-                </p>
+                <h3 className="font-semibold text-foreground mb-3 text-lg">🌅 Turning Point</h3>
+                <div className="bg-card/30 p-4 rounded-lg">
+                  <p className="text-foreground/90 leading-relaxed">
+                    {session.turningPoint.join('\n\n')}
+                  </p>
+                </div>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">💡 Insight</h3>
-                <p className="text-sm text-foreground/80 line-clamp-2">
-                  {session.insight.join(' ').slice(0, 100)}...
-                </p>
+                <h3 className="font-semibold text-foreground mb-3 text-lg">💡 Insight</h3>
+                <div className="bg-card/30 p-4 rounded-lg">
+                  <p className="text-foreground/90 leading-relaxed">
+                    {session.insight.join('\n\n')}
+                  </p>
+                </div>
               </div>
 
               <div>
-                <h3 className="font-semibold text-foreground mb-2">✨ Declaration</h3>
-                <p className="text-sm text-foreground/80 line-clamp-2">
-                  {session.declaration.join(' ').slice(0, 100)}...
-                </p>
+                <h3 className="font-semibold text-foreground mb-3 text-lg">✨ Declaration</h3>
+                <div className="bg-card/30 p-4 rounded-lg">
+                  <p className="text-foreground/90 leading-relaxed">
+                    {session.declaration.join('\n\n')}
+                  </p>
+                </div>
               </div>
             </div>
 
             <Separator />
 
             <div>
-              <h3 className="font-semibold text-foreground mb-2">💌 Your Letter</h3>
-              <div className="bg-card/50 p-4 rounded-lg">
-                <p className="text-sm text-foreground/80 italic line-clamp-4">
-                  {session.letter.join(' ').slice(0, 200)}...
+              <h3 className="font-semibold text-foreground mb-3 text-lg">💌 Your Letter</h3>
+              <div className="bg-card/50 p-6 rounded-lg">
+                <p className="text-foreground/90 italic leading-relaxed">
+                  {session.letter.join('\n\n')}
                 </p>
               </div>
             </div>

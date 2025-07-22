@@ -61,7 +61,27 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				dream: {
+					pink: 'hsl(var(--dream-pink))',
+					purple: 'hsl(var(--dream-purple))',
+					lavender: 'hsl(var(--dream-lavender))',
+					cream: 'hsl(var(--dream-cream))',
+					sage: 'hsl(var(--dream-sage))',
+					blue: 'hsl(var(--dream-blue))'
 				}
+			},
+			backgroundImage: {
+				'gradient-dreamy': 'var(--gradient-dreamy)',
+				'gradient-journal': 'var(--gradient-journal)'
+			},
+			boxShadow: {
+				'soft': 'var(--shadow-soft)',
+				'card': 'var(--shadow-card)'
+			},
+			transitionTimingFunction: {
+				'gentle': 'var(--transition-gentle)',
+				'smooth': 'var(--transition-smooth)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

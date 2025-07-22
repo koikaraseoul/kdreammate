@@ -88,45 +88,65 @@ Created with Dream Mate
               <div>
                 <h3 className="font-semibold text-foreground mb-3 text-lg">🌟 Dream</h3>
                 <div className="bg-card/30 p-4 rounded-lg">
-                  <p className="text-foreground/90 leading-relaxed">
-                    {session.dream.join('\n\n')}
-                  </p>
+                  <div className="space-y-4">
+                    {session.dream.map((response, index) => (
+                      <p key={index} className="text-foreground/90 leading-relaxed">
+                        {response}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               <div>
                 <h3 className="font-semibold text-foreground mb-3 text-lg">⚡ Challenge</h3>
                 <div className="bg-card/30 p-4 rounded-lg">
-                  <p className="text-foreground/90 leading-relaxed">
-                    {session.challenge.join('\n\n')}
-                  </p>
+                  <div className="space-y-4">
+                    {session.challenge.map((response, index) => (
+                      <p key={index} className="text-foreground/90 leading-relaxed">
+                        {response}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               <div>
                 <h3 className="font-semibold text-foreground mb-3 text-lg">🌅 Turning Point</h3>
                 <div className="bg-card/30 p-4 rounded-lg">
-                  <p className="text-foreground/90 leading-relaxed">
-                    {session.turningPoint.join('\n\n')}
-                  </p>
+                  <div className="space-y-4">
+                    {session.turningPoint.map((response, index) => (
+                      <p key={index} className="text-foreground/90 leading-relaxed">
+                        {response}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               <div>
                 <h3 className="font-semibold text-foreground mb-3 text-lg">💡 Insight</h3>
                 <div className="bg-card/30 p-4 rounded-lg">
-                  <p className="text-foreground/90 leading-relaxed">
-                    {session.insight.join('\n\n')}
-                  </p>
+                  <div className="space-y-4">
+                    {session.insight.map((response, index) => (
+                      <p key={index} className="text-foreground/90 leading-relaxed">
+                        {response}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               <div>
                 <h3 className="font-semibold text-foreground mb-3 text-lg">✨ Declaration</h3>
                 <div className="bg-card/30 p-4 rounded-lg">
-                  <p className="text-foreground/90 leading-relaxed">
-                    {session.declaration.join('\n\n')}
-                  </p>
+                  <div className="space-y-4">
+                    {session.declaration.map((response, index) => (
+                      <p key={index} className="text-foreground/90 leading-relaxed">
+                        {response}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -136,9 +156,13 @@ Created with Dream Mate
             <div>
               <h3 className="font-semibold text-foreground mb-3 text-lg">💌 Your Letter</h3>
               <div className="bg-card/50 p-6 rounded-lg">
-                <p className="text-foreground/90 italic leading-relaxed">
-                  {session.letter.join('\n\n')}
-                </p>
+                <div className="space-y-4">
+                  {session.letter.map((response, index) => (
+                    <p key={index} className="text-foreground/90 italic leading-relaxed">
+                      {response}
+                    </p>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card"
 import { DreamButton } from "@/components/ui/dream-button"
 import { Separator } from "@/components/ui/separator"
-import html2canvas from "html2canvas"
+import html2pdf from "html2pdf.js"
 
 interface DreamSession {
   dream: string[]
@@ -18,24 +18,22 @@ interface FinalPageProps {
 }
 
 export function FinalPage({ session, onRestart }: FinalPageProps) {
-  const downloadAsImage = async () => {
+  const downloadAsPDF = async () => {
     const cardElement = document.getElementById('dream-card')
     if (!cardElement) return
 
     try {
-      const canvas = await html2canvas(cardElement, {
-        backgroundColor: '#ffffff',
-        scale: 2,
-        useCORS: true,
-        allowTaint: true
-      })
+      const options = {
+        margin: 1,
+        filename: `kdreammate-card-${new Date().toISOString().split('T')[0]}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      }
       
-      const link = document.createElement('a')
-      link.download = `kdreammate-card-${new Date().toISOString().split('T')[0]}.jpg`
-      link.href = canvas.toDataURL('image/jpeg', 0.9)
-      link.click()
+      await html2pdf().set(options).from(cardElement).save()
     } catch (error) {
-      console.error('Failed to generate image:', error)
+      console.error('Failed to generate PDF:', error)
     }
   }
 
@@ -157,9 +155,9 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
           <DreamButton 
             variant="journal" 
             size="lg"
-            onClick={downloadAsImage}
+            onClick={downloadAsPDF}
           >
-            Save as Image
+            Save
           </DreamButton>
           
           <DreamButton 

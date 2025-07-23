@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card"
 import { DreamButton } from "@/components/ui/dream-button"
 import { Separator } from "@/components/ui/separator"
-import html2pdf from "html2pdf.js"
 
 interface DreamSession {
   dream: string[]
@@ -18,24 +17,6 @@ interface FinalPageProps {
 }
 
 export function FinalPage({ session, onRestart }: FinalPageProps) {
-  const downloadAsPDF = async () => {
-    const cardElement = document.getElementById('dream-card')
-    if (!cardElement) return
-
-    try {
-      const options = {
-        margin: 1,
-        filename: `kdreammate-card-${new Date().toISOString().split('T')[0]}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      }
-      
-      await html2pdf().set(options).from(cardElement).save()
-    } catch (error) {
-      console.error('Failed to generate PDF:', error)
-    }
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -151,15 +132,7 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
           </div>
         </Card>
 
-        <div className="flex gap-4 justify-center fade-in">
-          <DreamButton 
-            variant="journal" 
-            size="lg"
-            onClick={downloadAsPDF}
-          >
-            Save
-          </DreamButton>
-          
+        <div className="flex justify-center fade-in">
           <DreamButton 
             variant="gentle" 
             size="lg"

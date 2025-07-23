@@ -73,11 +73,11 @@ export function PromptPage({ section, onNext, onBack, isFirstSection }: PromptPa
               ✨
             </div>
             <div className="flex-1">
-              <div className="text-sm text-muted-foreground mb-2">Dream Mate</div>
+              <div className="text-sm text-muted-foreground mb-2">KDreammate</div>
               
               {showTyping && (
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <span className="text-sm">Dream Mate is typing</span>
+                  <span className="text-sm">KDreammate is typing</span>
                   <div className="typing-dots">
                     <span></span>
                   </div>

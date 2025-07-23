@@ -20,7 +20,7 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
   const downloadPDF = () => {
     // Simple implementation - in real app, you'd use a PDF library
     const content = `
-DREAM MATE JOURNAL
+KDREAMMATE JOURNAL
 
 DREAM:
 ${session.dream.join('\n\n')}
@@ -40,7 +40,7 @@ ${session.declaration.join('\n\n')}
 LETTER:
 ${session.letter.join('\n\n')}
 
-Created with Dream Mate
+Created with KDreammate
     `.trim()
     
     const blob = new Blob([content], { type: 'text/plain' })
@@ -174,7 +174,7 @@ Created with Dream Mate
             size="lg"
             onClick={downloadPDF}
           >
-            Download PDF
+            Save as Image
           </DreamButton>
           
           <DreamButton 
@@ -188,7 +188,7 @@ Created with Dream Mate
 
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
-            Thank you for taking this journey with Dream Mate ✨
+            Thank you for taking this journey with KDreammate ✨
           </p>
         </div>
       </div>

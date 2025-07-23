@@ -11,7 +11,7 @@ export function IntroPage({ onStart }: IntroPageProps) {
       <Card className="max-w-md w-full p-8 text-center space-y-6 shadow-card border-0 bg-gradient-dreamy fade-in">
         <div className="space-y-4">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            ✨ Dream Mate
+            ✨ KDreammate
           </h1>
           <p className="text-lg font-medium text-foreground/80">
             A Conversation to Discover Your Dream

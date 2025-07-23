@@ -9,7 +9,7 @@ const SECTIONS = [
     subtitle: "Set your intention",
     step: 1,
     prompts: [
-      "Hi there. I'm your Dream Mate for today. How does this space feel to you?",
+      "Hi there. I'm your KDreammate for today. How does this space feel to you?",
       "What feeling brought you here today?",
       "What quiet wish is waiting inside you?"
     ]

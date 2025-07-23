@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Dream Mate Design System - Calm, journal-like aesthetic */
+    /* KDreammate Design System - Calm, journal-like aesthetic */
     --background: 43 50% 97%;
     --foreground: 32 12% 25%;
 
@@ -39,7 +39,7 @@ All colors MUST be HSL.
 
     --radius: 0.75rem;
 
-    /* Dream Mate specific colors */
+    /* KDreammate specific colors */
     --dream-pink: 320 45% 85%;
     --dream-purple: 268 83% 58%;
     --dream-lavender: 268 83% 95%;

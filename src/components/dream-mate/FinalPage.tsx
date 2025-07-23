@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card"
 import { DreamButton } from "@/components/ui/dream-button"
 import { Separator } from "@/components/ui/separator"
+import html2canvas from "html2canvas"
 
 interface DreamSession {
   dream: string[]
@@ -17,41 +18,25 @@ interface FinalPageProps {
 }
 
 export function FinalPage({ session, onRestart }: FinalPageProps) {
-  const downloadPDF = () => {
-    // Simple implementation - in real app, you'd use a PDF library
-    const content = `
-KDREAMMATE JOURNAL
+  const downloadAsImage = async () => {
+    const cardElement = document.getElementById('dream-card')
+    if (!cardElement) return
 
-DREAM:
-${session.dream.join('\n\n')}
-
-CHALLENGE:
-${session.challenge.join('\n\n')}
-
-TURNING POINT:
-${session.turningPoint.join('\n\n')}
-
-INSIGHT:
-${session.insight.join('\n\n')}
-
-DECLARATION & ACTION:
-${session.declaration.join('\n\n')}
-
-LETTER:
-${session.letter.join('\n\n')}
-
-Created with KDreammate
-    `.trim()
-    
-    const blob = new Blob([content], { type: 'text/plain' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `dream-mate-journal-${new Date().toISOString().split('T')[0]}.txt`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    try {
+      const canvas = await html2canvas(cardElement, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true,
+        allowTaint: true
+      })
+      
+      const link = document.createElement('a')
+      link.download = `kdreammate-card-${new Date().toISOString().split('T')[0]}.jpg`
+      link.href = canvas.toDataURL('image/jpeg', 0.9)
+      link.click()
+    } catch (error) {
+      console.error('Failed to generate image:', error)
+    }
   }
 
   return (
@@ -66,7 +51,7 @@ Created with KDreammate
           </p>
         </div>
 
-        <Card className="p-8 shadow-card bg-gradient-dreamy slide-up">
+        <Card id="dream-card" className="p-8 shadow-card bg-gradient-dreamy slide-up">
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-xl font-semibold text-foreground mb-2">
@@ -172,7 +157,7 @@ Created with KDreammate
           <DreamButton 
             variant="journal" 
             size="lg"
-            onClick={downloadPDF}
+            onClick={downloadAsImage}
           >
             Save as Image
           </DreamButton>

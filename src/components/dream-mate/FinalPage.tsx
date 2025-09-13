@@ -33,32 +33,51 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
       await document.fonts.ready;
       
       const canvas = await html2canvas(element, {
-        scale: 3, // 3x scale for high resolution
+        scale: 2, // Reduced scale for better performance
         useCORS: true,
         allowTaint: false,
-        backgroundColor: null,
+        backgroundColor: '#f9f7f4', // Fallback background color
         width: element.offsetWidth,
         height: element.offsetHeight,
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: element.offsetWidth,
-        windowHeight: element.offsetHeight,
-        // Force better font rendering
         logging: false,
         removeContainer: true,
-        foreignObjectRendering: false,
-        // Ensure CSS custom properties are captured
+        foreignObjectRendering: true, // Changed to true for better CSS support
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.getElementById('dream-card');
           if (clonedElement) {
-            // Force compute all styles to prevent CSS custom property issues
+            // Replace CSS custom properties with actual values
+            const computedStyle = window.getComputedStyle(element);
+            
+            // Convert gradient background to actual CSS
+            clonedElement.style.background = 'linear-gradient(135deg, hsl(320 45% 85%) 0%, hsl(268 83% 95%) 100%)';
+            clonedElement.style.boxShadow = '0 8px 25px -8px hsl(268 83% 58% / 0.15)';
+            
+            // Ensure all text is visible
+            const textElements = clonedElement.querySelectorAll('*');
+            textElements.forEach((el) => {
+              const element = el as HTMLElement;
+              const style = window.getComputedStyle(element);
+              
+              // Force text colors to be explicit
+              if (style.color.includes('var(')) {
+                element.style.color = '#4a4037'; // Explicit dark color
+              }
+              
+              // Convert background colors
+              if (style.backgroundColor.includes('var(')) {
+                element.style.backgroundColor = 'rgba(249, 247, 244, 0.3)'; // Light background
+              }
+            });
+            
+            // Ensure proper rendering
             clonedElement.style.transform = 'translateZ(0)';
+            clonedElement.style.willChange = 'auto';
           }
         }
       });
 
       // Convert to JPG with high quality
-      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
       
       // Create download link
       const link = document.createElement('a');

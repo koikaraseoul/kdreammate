@@ -1,8 +1,6 @@
 import { Card } from "@/components/ui/card"
 import { DreamButton } from "@/components/ui/dream-button"
 import { Separator } from "@/components/ui/separator"
-import html2canvas from "html2canvas"
-import { toast } from "sonner"
 
 interface DreamSession {
   dream: string[]
@@ -19,34 +17,6 @@ interface FinalPageProps {
 }
 
 export function FinalPage({ session, onRestart }: FinalPageProps) {
-  const handleSaveDreamCard = async () => {
-    try {
-      const dreamCard = document.getElementById('dream-card')
-      if (!dreamCard) {
-        toast.error("Could not find dream card to save")
-        return
-      }
-
-      const canvas = await html2canvas(dreamCard, {
-        backgroundColor: '#ffffff',
-        scale: 6,
-        useCORS: true,
-        allowTaint: true,
-        width: dreamCard.offsetWidth,
-        height: dreamCard.offsetHeight
-      })
-
-      const link = document.createElement('a')
-      link.download = `dream-journey-${new Date().toISOString().split('T')[0]}.jpg`
-      link.href = canvas.toDataURL('image/jpeg', 0.95)
-      link.click()
-
-      toast.success("Dream ID Card saved successfully! ✨")
-    } catch (error) {
-      console.error('Error saving dream card:', error)
-      toast.error("Failed to save dream card. Please try again.")
-    }
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -162,14 +132,7 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
           </div>
         </Card>
 
-        <div className="flex justify-center gap-4 fade-in">
-          <DreamButton 
-            variant="dreamy" 
-            size="lg"
-            onClick={handleSaveDreamCard}
-          >
-            💾 Save Dream Card
-          </DreamButton>
+        <div className="flex justify-center fade-in">
           <DreamButton 
             variant="gentle" 
             size="lg"

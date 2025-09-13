@@ -29,7 +29,7 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
 
       const canvas = await html2canvas(dreamCard, {
         backgroundColor: '#ffffff',
-        scale: 4,
+        scale: 6,
         useCORS: true,
         allowTaint: true,
         width: dreamCard.offsetWidth,

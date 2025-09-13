@@ -1,6 +1,8 @@
 import { Card } from "@/components/ui/card"
 import { DreamButton } from "@/components/ui/dream-button"
 import { Separator } from "@/components/ui/separator"
+import html2canvas from "html2canvas"
+import { toast } from "sonner"
 
 interface DreamSession {
   dream: string[]
@@ -17,6 +19,63 @@ interface FinalPageProps {
 }
 
 export function FinalPage({ session, onRestart }: FinalPageProps) {
+  const saveDreamCard = async () => {
+    const element = document.getElementById('dream-card');
+    if (!element) {
+      toast.error("Could not find dream card to save");
+      return;
+    }
+
+    try {
+      toast.loading("Creating your dream card...");
+      
+      // Wait for fonts and images to load
+      await document.fonts.ready;
+      
+      const canvas = await html2canvas(element, {
+        scale: 3, // 3x scale for high resolution
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: null,
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: element.offsetWidth,
+        windowHeight: element.offsetHeight,
+        // Force better font rendering
+        logging: false,
+        removeContainer: true,
+        foreignObjectRendering: false,
+        // Ensure CSS custom properties are captured
+        onclone: (clonedDoc) => {
+          const clonedElement = clonedDoc.getElementById('dream-card');
+          if (clonedElement) {
+            // Force compute all styles to prevent CSS custom property issues
+            clonedElement.style.transform = 'translateZ(0)';
+          }
+        }
+      });
+
+      // Convert to JPG with high quality
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      
+      // Create download link
+      const link = document.createElement('a');
+      link.download = `dream-card-${new Date().toISOString().split('T')[0]}.jpg`;
+      link.href = imgData;
+      
+      // Trigger download
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success("Dream card saved successfully!");
+    } catch (error) {
+      console.error('Error saving dream card:', error);
+      toast.error("Failed to save dream card. Please try again.");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -132,7 +191,14 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
           </div>
         </Card>
 
-        <div className="flex justify-center fade-in">
+        <div className="flex justify-center gap-4 fade-in">
+          <DreamButton 
+            variant="gentle" 
+            size="lg"
+            onClick={saveDreamCard}
+          >
+            Save Dream Card
+          </DreamButton>
           <DreamButton 
             variant="gentle" 
             size="lg"

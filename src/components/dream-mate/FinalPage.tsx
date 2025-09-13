@@ -29,13 +29,16 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
 
       const canvas = await html2canvas(dreamCard, {
         backgroundColor: '#ffffff',
-        scale: 2,
-        useCORS: true
+        scale: 4,
+        useCORS: true,
+        allowTaint: true,
+        width: dreamCard.offsetWidth,
+        height: dreamCard.offsetHeight
       })
 
       const link = document.createElement('a')
-      link.download = `dream-journey-${new Date().toISOString().split('T')[0]}.png`
-      link.href = canvas.toDataURL()
+      link.download = `dream-journey-${new Date().toISOString().split('T')[0]}.jpg`
+      link.href = canvas.toDataURL('image/jpeg', 0.95)
       link.click()
 
       toast.success("Dream ID Card saved successfully! ✨")

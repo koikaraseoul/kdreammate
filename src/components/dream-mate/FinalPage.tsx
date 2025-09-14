@@ -29,6 +29,7 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
     try {
       toast.loading("Creating your dream card...");
 
+      // Ensure fonts ready
       await document.fonts.ready;
 
       // Expand element temporarily
@@ -43,23 +44,24 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
       element.style.overflow = "visible";
       element.style.position = "static";
 
-      // Force reflow
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      // Capture using scroll dimensions to ensure full height
       const actualWidth = element.scrollWidth;
       const actualHeight = element.scrollHeight;
 
+      // ✅ Use devicePixelRatio for sharper output
+      const scale = Math.max(2, window.devicePixelRatio);
+
       const canvas = await html2canvas(element, {
-        scale: 2,
+        scale,
         useCORS: true,
         backgroundColor: "#f9f7f4",
         width: actualWidth,
         height: actualHeight,
         scrollX: 0,
-        scrollY: -window.scrollY, // ✅ important: prevent cutting off top
-        windowWidth: document.documentElement.offsetWidth,
-        windowHeight: document.documentElement.scrollHeight,
+        scrollY: -window.scrollY,
+        windowWidth: actualWidth,
+        windowHeight: actualHeight,
         logging: false,
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.getElementById("dream-card");
@@ -73,14 +75,14 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
         },
       });
 
-      // Restore styles
+      // Restore original styles
       element.style.height = originalStyles.height;
       element.style.maxHeight = originalStyles.maxHeight;
       element.style.overflow = originalStyles.overflow;
       element.style.position = originalStyles.position;
 
-      // Save as JPG
-      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      // Save as high-quality JPG
+      const imgData = canvas.toDataURL("image/jpeg", 1.0); // ✅ max quality
       const link = document.createElement("a");
       link.download = `dream-card-${new Date()
         .toISOString()

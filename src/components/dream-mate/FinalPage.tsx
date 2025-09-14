@@ -20,7 +20,7 @@ interface FinalPageProps {
 
 export function FinalPage({ session, onRestart }: FinalPageProps) {
   const saveDreamCard = async () => {
-    const element = document.getElementById('dream-card');
+    const element = document.getElementById("dream-card");
     if (!element) {
       toast.error("Could not find dream card to save");
       return;
@@ -28,105 +28,71 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
 
     try {
       toast.loading("Creating your dream card...");
-      
-      // Wait for fonts and images to load
+
       await document.fonts.ready;
-      
-      // Store original styles
+
+      // Expand element temporarily
       const originalStyles = {
         height: element.style.height,
         maxHeight: element.style.maxHeight,
         overflow: element.style.overflow,
-        position: element.style.position
+        position: element.style.position,
       };
-      
-      // Temporarily expand the element to show all content
-      element.style.height = 'auto';
-      element.style.maxHeight = 'none';
-      element.style.overflow = 'visible';
-      element.style.position = 'static';
-      
-      // Wait for layout to update
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      // Get the actual content dimensions
-      const rect = element.getBoundingClientRect();
-      const actualWidth = Math.max(element.scrollWidth, rect.width);
-      const actualHeight = Math.max(element.scrollHeight, rect.height);
-      
+      element.style.height = "auto";
+      element.style.maxHeight = "none";
+      element.style.overflow = "visible";
+      element.style.position = "static";
+
+      // Force reflow
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Capture using scroll dimensions to ensure full height
+      const actualWidth = element.scrollWidth;
+      const actualHeight = element.scrollHeight;
+
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
-        allowTaint: false,
-        backgroundColor: '#f9f7f4',
+        backgroundColor: "#f9f7f4",
         width: actualWidth,
         height: actualHeight,
-        x: 0,
-        y: 0,
         scrollX: 0,
-        scrollY: 0,
+        scrollY: -window.scrollY, // ✅ important: prevent cutting off top
+        windowWidth: document.documentElement.offsetWidth,
+        windowHeight: document.documentElement.scrollHeight,
         logging: false,
-        removeContainer: true,
-        foreignObjectRendering: true,
         onclone: (clonedDoc) => {
-          const clonedElement = clonedDoc.getElementById('dream-card');
+          const clonedElement = clonedDoc.getElementById("dream-card");
           if (clonedElement) {
-            // Ensure the cloned element also shows all content
-            clonedElement.style.height = 'auto';
-            clonedElement.style.maxHeight = 'none';
-            clonedElement.style.overflow = 'visible';
-            clonedElement.style.position = 'static';
-            
-            // Replace CSS custom properties with actual values
-            clonedElement.style.background = 'linear-gradient(135deg, hsl(320 45% 85%) 0%, hsl(268 83% 95%) 100%)';
-            clonedElement.style.boxShadow = '0 8px 25px -8px hsl(268 83% 58% / 0.15)';
-            
-            // Ensure all text is visible
-            const textElements = clonedElement.querySelectorAll('*');
-            textElements.forEach((el) => {
-              const element = el as HTMLElement;
-              const style = window.getComputedStyle(element);
-              
-              // Force text colors to be explicit
-              if (style.color.includes('var(')) {
-                element.style.color = '#4a4037';
-              }
-              
-              // Convert background colors
-              if (style.backgroundColor.includes('var(')) {
-                element.style.backgroundColor = 'rgba(249, 247, 244, 0.3)';
-              }
-            });
-            
-            // Ensure proper rendering
-            clonedElement.style.transform = 'translateZ(0)';
-            clonedElement.style.willChange = 'auto';
+            clonedElement.style.height = "auto";
+            clonedElement.style.maxHeight = "none";
+            clonedElement.style.overflow = "visible";
+            clonedElement.style.position = "static";
+            clonedElement.style.transform = "translateZ(0)";
           }
-        }
+        },
       });
 
-      // Restore original styles
+      // Restore styles
       element.style.height = originalStyles.height;
       element.style.maxHeight = originalStyles.maxHeight;
       element.style.overflow = originalStyles.overflow;
       element.style.position = originalStyles.position;
 
-      // Convert to JPG with high quality
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
-      
-      // Create download link
-      const link = document.createElement('a');
-      link.download = `dream-card-${new Date().toISOString().split('T')[0]}.jpg`;
+      // Save as JPG
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      const link = document.createElement("a");
+      link.download = `dream-card-${new Date()
+        .toISOString()
+        .split("T")[0]}.jpg`;
       link.href = imgData;
-      
-      // Trigger download
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       toast.success("Dream card saved successfully!");
     } catch (error) {
-      console.error('Error saving dream card:', error);
+      console.error("Error saving dream card:", error);
       toast.error("Failed to save dream card. Please try again.");
     }
   };

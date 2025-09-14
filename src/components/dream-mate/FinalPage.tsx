@@ -32,17 +32,35 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
       // Wait for fonts and images to load
       await document.fonts.ready;
       
-      // Scroll the element into view and wait a bit for rendering
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Store original styles
+      const originalStyles = {
+        height: element.style.height,
+        maxHeight: element.style.maxHeight,
+        overflow: element.style.overflow,
+        position: element.style.position
+      };
+      
+      // Temporarily expand the element to show all content
+      element.style.height = 'auto';
+      element.style.maxHeight = 'none';
+      element.style.overflow = 'visible';
+      element.style.position = 'static';
+      
+      // Wait for layout to update
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Get the actual content dimensions
+      const rect = element.getBoundingClientRect();
+      const actualWidth = Math.max(element.scrollWidth, rect.width);
+      const actualHeight = Math.max(element.scrollHeight, rect.height);
       
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
         allowTaint: false,
         backgroundColor: '#f9f7f4',
-        width: element.scrollWidth,
-        height: element.scrollHeight,
+        width: actualWidth,
+        height: actualHeight,
         x: 0,
         y: 0,
         scrollX: 0,
@@ -53,10 +71,13 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.getElementById('dream-card');
           if (clonedElement) {
-            // Replace CSS custom properties with actual values
-            const computedStyle = window.getComputedStyle(element);
+            // Ensure the cloned element also shows all content
+            clonedElement.style.height = 'auto';
+            clonedElement.style.maxHeight = 'none';
+            clonedElement.style.overflow = 'visible';
+            clonedElement.style.position = 'static';
             
-            // Convert gradient background to actual CSS
+            // Replace CSS custom properties with actual values
             clonedElement.style.background = 'linear-gradient(135deg, hsl(320 45% 85%) 0%, hsl(268 83% 95%) 100%)';
             clonedElement.style.boxShadow = '0 8px 25px -8px hsl(268 83% 58% / 0.15)';
             
@@ -68,12 +89,12 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
               
               // Force text colors to be explicit
               if (style.color.includes('var(')) {
-                element.style.color = '#4a4037'; // Explicit dark color
+                element.style.color = '#4a4037';
               }
               
               // Convert background colors
               if (style.backgroundColor.includes('var(')) {
-                element.style.backgroundColor = 'rgba(249, 247, 244, 0.3)'; // Light background
+                element.style.backgroundColor = 'rgba(249, 247, 244, 0.3)';
               }
             });
             
@@ -83,6 +104,12 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
           }
         }
       });
+
+      // Restore original styles
+      element.style.height = originalStyles.height;
+      element.style.maxHeight = originalStyles.maxHeight;
+      element.style.overflow = originalStyles.overflow;
+      element.style.position = originalStyles.position;
 
       // Convert to JPG with high quality
       const imgData = canvas.toDataURL('image/jpeg', 0.95);

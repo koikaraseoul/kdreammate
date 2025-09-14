@@ -1,8 +1,6 @@
 import { Card } from "@/components/ui/card"
 import { DreamButton } from "@/components/ui/dream-button"
 import { Separator } from "@/components/ui/separator"
-import html2canvas from "html2canvas"
-import { toast } from "sonner"
 
 interface DreamSession {
   dream: string[]
@@ -19,99 +17,20 @@ interface FinalPageProps {
 }
 
 export function FinalPage({ session, onRestart }: FinalPageProps) {
-  const saveDreamCard = async () => {
-    const element = document.getElementById("dream-card");
-    if (!element) {
-      toast.error("Could not find dream card to save");
-      return;
-    }
-
-    try {
-      toast.loading("Creating your dream card...");
-
-      // Ensure fonts ready
-      await document.fonts.ready;
-
-      // Expand element temporarily
-      const originalStyles = {
-        height: element.style.height,
-        maxHeight: element.style.maxHeight,
-        overflow: element.style.overflow,
-        position: element.style.position,
-      };
-      element.style.height = "auto";
-      element.style.maxHeight = "none";
-      element.style.overflow = "visible";
-      element.style.position = "static";
-
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      const actualWidth = element.scrollWidth;
-      const actualHeight = element.scrollHeight;
-
-      // ✅ Use devicePixelRatio for sharper output
-      const scale = Math.max(2, window.devicePixelRatio);
-
-      const canvas = await html2canvas(element, {
-        scale,
-        useCORS: true,
-        backgroundColor: "#f9f7f4",
-        width: actualWidth,
-        height: actualHeight,
-        scrollX: 0,
-        scrollY: -window.scrollY,
-        windowWidth: actualWidth,
-        windowHeight: actualHeight,
-        logging: false,
-        onclone: (clonedDoc) => {
-          const clonedElement = clonedDoc.getElementById("dream-card");
-          if (clonedElement) {
-            clonedElement.style.height = "auto";
-            clonedElement.style.maxHeight = "none";
-            clonedElement.style.overflow = "visible";
-            clonedElement.style.position = "static";
-            clonedElement.style.transform = "translateZ(0)";
-          }
-        },
-      });
-
-      // Restore original styles
-      element.style.height = originalStyles.height;
-      element.style.maxHeight = originalStyles.maxHeight;
-      element.style.overflow = originalStyles.overflow;
-      element.style.position = originalStyles.position;
-
-      // Save as high-quality JPG
-      const imgData = canvas.toDataURL("image/jpeg", 1.0); // ✅ max quality
-      const link = document.createElement("a");
-      link.download = `dream-card-${new Date()
-        .toISOString()
-        .split("T")[0]}.jpg`;
-      link.href = imgData;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      toast.success("Dream card saved successfully!");
-    } catch (error) {
-      console.error("Error saving dream card:", error);
-      toast.error("Failed to save dream card. Please try again.");
-    }
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-2xl w-full space-y-6">
         <div className="text-center space-y-4 fade-in">
-          <h1 className="text-3xl font-bold text-foreground">
-            ✨ Your Dream ID Card
+           <h1 className="text-3xl font-bold text-foreground">
+             ✨ Your Dream Journey
           </h1>
-          <p className="text-muted-foreground">
-            A beautiful summary of your journey today
+           <p className="text-muted-foreground">
+             A reflection on your inner discoveries
           </p>
         </div>
 
-        <Card id="dream-card" className="p-8 shadow-card bg-gradient-dreamy slide-up">
+        <Card className="p-8 shadow-card bg-gradient-dreamy slide-up">
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-xl font-semibold text-foreground mb-2">
@@ -213,22 +132,16 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
           </div>
         </Card>
 
-        <div className="flex justify-center gap-4 fade-in">
-          <DreamButton 
-            variant="gentle" 
-            size="lg"
-            onClick={saveDreamCard}
-          >
-            Save Dream Card
-          </DreamButton>
-          <DreamButton 
-            variant="gentle" 
-            size="lg"
-            onClick={onRestart}
-          >
-            Start Again
-          </DreamButton>
-        </div>
+         <div className="flex justify-center fade-in">
+           <DreamButton 
+             variant="journal" 
+             size="lg"
+             onClick={onRestart}
+             className="w-full max-w-xs"
+           >
+             Begin Another Journey
+           </DreamButton>
+         </div>
 
         <div className="text-center">
           <p className="text-sm text-muted-foreground">

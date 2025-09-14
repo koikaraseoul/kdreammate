@@ -32,16 +32,24 @@ export function FinalPage({ session, onRestart }: FinalPageProps) {
       // Wait for fonts and images to load
       await document.fonts.ready;
       
+      // Scroll the element into view and wait a bit for rendering
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       const canvas = await html2canvas(element, {
-        scale: 2, // Reduced scale for better performance
+        scale: 2,
         useCORS: true,
         allowTaint: false,
-        backgroundColor: '#f9f7f4', // Fallback background color
-        width: element.offsetWidth,
-        height: element.offsetHeight,
+        backgroundColor: '#f9f7f4',
+        width: element.scrollWidth,
+        height: element.scrollHeight,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0,
         logging: false,
         removeContainer: true,
-        foreignObjectRendering: true, // Changed to true for better CSS support
+        foreignObjectRendering: true,
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.getElementById('dream-card');
           if (clonedElement) {
